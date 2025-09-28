@@ -9,6 +9,7 @@ import { AddModal } from "@/components/AddModal";
 import { UsersTable } from "@/components/UsersTable";
 import type { User as UserType } from "@/type";
 import { StoresTable } from "@/components/StoresTable";
+import { useNavigate } from "react-router";
 
 interface Pagination {
   page: number;
@@ -35,6 +36,7 @@ interface StoresData {
 
 export function AdminDashboard() {
   const { user } = useContext(AuthContext);
+  const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -103,6 +105,14 @@ export function AdminDashboard() {
     );
   }
 
+  useEffect(() => {
+    if (user?.role === "USER") {
+      navigate("/");
+    } else if (user?.role === "STORE_OWNER") {
+      navigate("/owner-dashboard");
+    }
+  }, [user, navigate]);
+  
   return (
     <div className="space-y-8 px-4 sm:px-6 lg:px-8 py-6 container">
       {/* Stats Grid */}

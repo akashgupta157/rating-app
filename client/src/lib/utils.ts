@@ -5,7 +5,7 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
-export const baseUrl = "http://localhost:3000";
+export const baseUrl = "https://rating-app-5o6d.onrender.com";
 
 export function configure(token: string) {
   return {

@@ -9,10 +9,12 @@ import { baseUrl, configure } from "@/lib/utils";
 import axios from "axios";
 import { StoreCard } from "../components/StoreCard";
 import { toast } from "sonner";
+import { useNavigate } from "react-router";
 
 export function UserDashboard() {
   const { user } = useContext(AuthContext);
   const config = configure(user.token);
+  const navigate = useNavigate();
 
   const [searchQuery, setSearchQuery] = useState("");
   const [addressFilter, setAddressFilter] = useState("");
@@ -38,6 +40,14 @@ export function UserDashboard() {
       }
     }
   }
+
+  useEffect(() => {
+    if (user?.role === "ADMIN") {
+      navigate("/admin-dashboard");
+    } else if (user?.role === "STORE_OWNER") {
+      navigate("/owner-dashboard");
+    }
+  }, [user, navigate]);
 
   useEffect(() => {
     fetchStores();

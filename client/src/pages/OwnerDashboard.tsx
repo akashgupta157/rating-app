@@ -14,6 +14,7 @@ import { AuthContext } from "@/ContextApi";
 import { baseUrl, configure } from "@/lib/utils";
 import axios from "axios";
 import { Badge } from "@/components/ui/badge";
+import { useNavigate } from "react-router";
 
 interface StoreOwnerDashboardData {
   store: StoreType & {
@@ -25,6 +26,7 @@ interface StoreOwnerDashboardData {
 
 export function OwnerDashboard() {
   const { user } = useContext(AuthContext);
+  const navigate = useNavigate();
   const [data, setData] = useState<StoreOwnerDashboardData | null>(null);
   const [loading, setLoading] = useState(true);
 
@@ -66,6 +68,14 @@ export function OwnerDashboard() {
       minute: "2-digit",
     });
   };
+
+  useEffect(() => {
+    if (user?.role === "USER") {
+      navigate("/");
+    } else if (user?.role === "ADMIN") {
+      navigate("/admin-dashboard");
+    }
+  }, [user, navigate]);
 
   const renderStars = (rating: number) => {
     return (
