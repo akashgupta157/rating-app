@@ -42,6 +42,14 @@ export function AdminDashboard() {
 
   const config = configure(user.token);
 
+  useEffect(() => {
+    if (user?.role === "USER") {
+      navigate("/");
+    } else if (user?.role === "STORE_OWNER") {
+      navigate("/owner-dashboard");
+    }
+  }, [user, navigate]);
+
   const [stats, setStats] = useState<DashboardStats | null>(null);
   const [users, setUsers] = useState<UsersData | null>(null);
   const [stores, setStores] = useState<StoresData | null>(null);
@@ -105,14 +113,6 @@ export function AdminDashboard() {
     );
   }
 
-  useEffect(() => {
-    if (user?.role === "USER") {
-      navigate("/");
-    } else if (user?.role === "STORE_OWNER") {
-      navigate("/owner-dashboard");
-    }
-  }, [user, navigate]);
-  
   return (
     <div className="space-y-8 px-4 sm:px-6 lg:px-8 py-6 container">
       {/* Stats Grid */}
