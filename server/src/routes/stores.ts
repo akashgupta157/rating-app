@@ -48,7 +48,6 @@ router.get("/", async (req: AuthRequest, res) => {
       orderBy: { createdAt: "desc" },
     });
 
-    // Calculate average ratings and include user's rating
     const storesWithRatings = stores.map((store) => {
       const ratings = store.ratings;
       const averageRating =
@@ -86,7 +85,7 @@ router.get("/", async (req: AuthRequest, res) => {
       },
     });
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    res.status(500).json({ error: (error as Error).message });
   }
 });
 
@@ -151,7 +150,7 @@ router.post("/", async (req: AuthRequest, res) => {
       store,
     });
   } catch (error) {
-    return res.status(500).json({ error: error.message });
+    return res.status(500).json({ error: (error as Error).message });
   }
 });
 
