@@ -27,15 +27,16 @@ import { useNavigate } from "react-router";
 
 const formSchema = z.object({
   email: z.string().min(2, { message: "Email is required" }).email(),
-  password: z.string(),
-  // .min(8, { message: "Password must be at least 8 characters." })
-  // .max(16, { message: "Password must be at most 16 characters." })
-  // .regex(/[A-Z]/, {
-  //   message: "Password must contain at least one uppercase letter.",
-  // })
-  // .regex(/[^A-Za-z0-9]/, {
-  //   message: "Password must contain at least one special character.",
-  // }),
+  password: z
+    .string()
+    .min(8, { message: "Password must be at least 8 characters." })
+    .max(16, { message: "Password must be at most 16 characters." })
+    .regex(/[A-Z]/, {
+      message: "Password must contain at least one uppercase letter.",
+    })
+    .regex(/[^A-Za-z0-9]/, {
+      message: "Password must contain at least one special character.",
+    }),
 });
 
 export default function Login() {
