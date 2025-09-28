@@ -5,6 +5,12 @@ import { PrismaClient } from "@prisma/client";
 import express, { Request, Response } from "express";
 import { withAccelerate } from "@prisma/extension-accelerate";
 
+import authRoutes from "./routes/auth";
+import userRoutes from "./routes/user";
+import storesRoutes from "./routes/stores";
+import ratingsRoutes from "./routes/ratings";
+import dashboardRoutes from "./routes/dashboard";
+
 const app = express();
 
 export const prisma = new PrismaClient().$extends(withAccelerate());
@@ -17,12 +23,14 @@ app.get("/", (_req: Request, res: Response) => {
   return res.send("Express Typescript on Vercel");
 });
 
-app.use("/auth", require("./routes/auth").default);
-app.use("/user", authenticate, require("./routes/user").default);
-app.use("/stores", authenticate, require("./routes/stores").default);
-app.use("/ratings", authenticate, require("./routes/ratings").default);
-app.use("/dashboard", authenticate, require("./routes/dashboard").default);
+app.use("/auth", authRoutes);
+app.use("/user", authenticate, userRoutes);
+app.use("/stores", authenticate, storesRoutes);
+app.use("/ratings", authenticate, ratingsRoutes);
+app.use("/dashboard", authenticate, dashboardRoutes);
 
-app.listen(process.env.PORT || 3000, () => {
-  return console.log(`Server is listening on 3000`);
+const PORT = process.env.PORT || 3000;
+
+app.listen(PORT, () => {
+  console.log(`Server is listening on port ${PORT}`);
 });
