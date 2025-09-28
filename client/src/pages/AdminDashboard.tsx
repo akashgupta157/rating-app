@@ -40,22 +40,14 @@ export function AdminDashboard() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const config = configure(user.token);
-
-  useEffect(() => {
-    if (user?.role === "USER") {
-      navigate("/");
-    } else if (user?.role === "STORE_OWNER") {
-      navigate("/owner-dashboard");
-    }
-  }, [user, navigate]);
-
   const [stats, setStats] = useState<DashboardStats | null>(null);
   const [users, setUsers] = useState<UsersData | null>(null);
   const [stores, setStores] = useState<StoresData | null>(null);
 
   const loadData = useCallback(async () => {
     if (!user?.token) return;
+
+    const config = configure(user.token);
 
     setLoading(true);
     setError(null);
@@ -76,7 +68,15 @@ export function AdminDashboard() {
     } finally {
       setLoading(false);
     }
-  }, []);
+  }, [user?.token]);
+
+  useEffect(() => {
+    if (user?.role === "USER") {
+      navigate("/");
+    } else if (user?.role === "STORE_OWNER") {
+      navigate("/owner-dashboard");
+    }
+  }, [user, navigate]);
 
   useEffect(() => {
     loadData();
@@ -115,7 +115,6 @@ export function AdminDashboard() {
 
   return (
     <div className="space-y-8 px-4 sm:px-6 lg:px-8 py-6 container">
-      {/* Stats Grid */}
       <div className="gap-4 grid sm:grid-cols-2 lg:grid-cols-3">
         <StatCard
           title="Total Users"
@@ -137,7 +136,6 @@ export function AdminDashboard() {
         />
       </div>
 
-      {/* Content Tabs */}
       <Tabs defaultValue="users" className="space-y-6">
         <div className="flex sm:flex-row flex-col justify-between items-start sm:items-center gap-4">
           <TabsList className="w-full sm:w-auto">
